@@ -1,14 +1,17 @@
-import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Card, List, Typography } from 'antd';
 import { getActiveUser } from '../services/authService';
-import withAuth from '../hoc/withAuth'; 
-import withLogger from '../hoc/withLogger'; 
+import './Profile.css'; 
+
+const { Title, Text } = Typography;
 
 const Profile = () => {
   const [user, setUser] = useState(null);
 
   const loadUser = () => {
-    const currentUser = getActiveUser();  
+    const currentUser = getActiveUser();
     if (currentUser) {
+      console.log('Текущий пользователь:', currentUser);  
       setUser(currentUser);  
     } else {
       console.log('Текущий пользователь не найден');
@@ -19,7 +22,8 @@ const Profile = () => {
     loadUser();
 
     const handleStorageChange = () => {
-      loadUser();  
+      console.log('Изменения в localStorage');
+      loadUser(); 
     };
 
     window.addEventListener('storage', handleStorageChange);
@@ -29,34 +33,38 @@ const Profile = () => {
     };
   }, []);
 
-  
-  const memoizedUser = useMemo(() => user, [user]);
-
-  const updateProfile = useCallback((newData) => {
-    setUser((prevUser) => ({
-      ...prevUser,
-      ...newData
-    }));
-  }, []);
-
-  if (!memoizedUser) {
-    return <p>Загрузка...</p>;  
+  if (!user) {
+    return <p>Войдите</p>; 
   }
 
   return (
-    <div>
-      <h2>Профиль пользователя</h2>
-      <p>Имя пользователя: {memoizedUser.username}</p>
-      <p>Электронная почта: {memoizedUser.email}</p>
-      <h3>Привычки</h3>
-      {memoizedUser.habits && memoizedUser.habits.length > 0 ? (
-        <ul>
-          {memoizedUser.habits.map((habit, index) => (
-            <li key={index}>
-              <strong>{habit.title}</strong>: {habit.description}
-            </li>
-          ))}
-        </ul>
+    <div className="profile-card-container">
+      <Title level={2} className="profile-title">Профиль пользователя</Title>
+      <Card style={{ marginBottom: '20px' }}>
+        <Text strong>Имя пользователя: </Text>
+        <Text>{user.username}</Text>
+        <br />
+        <Text strong>Электронная почта: </Text>
+        <Text>{user.email}</Text>
+      </Card>
+
+      <Title level={3}>Привычки</Title>
+      {user.habits && user.habits.length > 0 ? (
+        <List
+          itemLayout="horizontal"
+          dataSource={user.habits}
+          renderItem={(habit, index) => (
+            <List.Item key={index}>
+              <Card
+                className="profile-card" 
+                title={<Text strong>{habit.title}</Text>}
+                bordered={false}
+              >
+                <Text>{habit.description}</Text>
+              </Card>
+            </List.Item>
+          )}
+        />
       ) : (
         <p>Нет привычек</p>
       )}
@@ -64,4 +72,4 @@ const Profile = () => {
   );
 };
 
-export default withAuth(withLogger(Profile));
+export default Profile;

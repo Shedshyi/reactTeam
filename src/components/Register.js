@@ -14,7 +14,7 @@ const Register = () => {
     const registeredUser = registerUser(userData);
     if (registeredUser) {
       message.success('Регистрация успешна!');
-      navigate('/login');  
+      navigate('/login');  // Перенаправляем на страницу входа
     } else {
       message.error('Пользователь с таким email уже существует!');
     }

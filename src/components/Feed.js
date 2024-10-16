@@ -1,33 +1,61 @@
-import React, { useState, useEffect } from 'react';
-import { List, Card } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { List, Avatar, Card, Typography } from 'antd';
+import { getAllUsers } from '../services/authService';
+import './Feed.css'; // Подключаем CSS для ленты
+
+const { Title, Text } = Typography;
 
 const Feed = () => {
-  const [habits, setHabits] = useState([]);
+  const [users, setUsers] = useState([]);
 
-  
   useEffect(() => {
-    const mockHabits = [
-      { id: 1, title: 'Читать 20 страниц в день', description: 'Я читаю каждый день по 20 страниц' },
-      { id: 2, title: 'Бегать по утрам', description: 'Каждое утро я бегаю 5 км' },
-      { id: 3, title: 'Учить английский', description: 'Каждый день учу новые слова' },
-    ];
-    setHabits(mockHabits);
+    const usersData = getAllUsers();
+    setUsers(usersData);
   }, []);
 
   return (
-    <div>
-      <h2>Лента привычек</h2>
-      <List
-        grid={{ gutter: 16, column: 3 }}
-        dataSource={habits}
-        renderItem={habit => (
-          <List.Item>
-            <Card title={habit.title}>
-              {habit.description}
-            </Card>
-          </List.Item>
-        )}
-      />
+    <div className="feed-container">
+      <Title level={2} className="feed-title">Лента пользователей</Title>
+      {users.length === 0 ? (
+        <p>Нет пользователей для отображения.</p>
+      ) : (
+        <List
+          itemLayout="vertical"
+          dataSource={users}
+          renderItem={(user) => (
+            <List.Item
+              key={user.username}
+              className="feed-item"
+            >
+              <Card
+                className="feed-card"
+                hoverable
+                cover={<Avatar size={64} style={{ backgroundColor: '#87d068' }}>{user.username[0]}</Avatar>}
+              >
+                <List.Item.Meta
+                  title={<Text strong className="feed-username">{user.username}</Text>}
+                  description={
+                    <div className="feed-description">
+                      <strong>Привычки:</strong>
+                      <ul>
+                        {user.habits && user.habits.length > 0 ? (
+                          user.habits.map((habit, index) => (
+                            <li key={index} className="feed-habit-item">
+                              <Text>{habit.title}: {habit.description}</Text>
+                            </li>
+                          ))
+                        ) : (
+                          <li>Нет привычек</li>
+                        )}
+                      </ul>
+                    </div>
+                  }
+                />
+              </Card>
+            </List.Item>
+          )}
+        />
+      )}
     </div>
   );
 };
