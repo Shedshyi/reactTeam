@@ -5,35 +5,34 @@ const Profile = () => {
   const [user, setUser] = useState(null);
 
   const loadUser = () => {
-    const currentUser = getActiveUser();  // Получаем текущего пользователя
+    const currentUser = getActiveUser();  
     if (currentUser) {
-      console.log('Текущий пользователь:', currentUser);  // Логируем текущего пользователя
-      setUser(currentUser);  // Если пользователь найден, сохраняем в состояние
-    } else {
+      console.log('Текущий пользователь:', currentUser);  
+      setUser(currentUser);  
       console.log('Текущий пользователь не найден');
     }
   };
 
   useEffect(() => {
-    // Загружаем данные пользователя при монтировании компонента
+    
     loadUser();
 
-    // Добавляем слушатель события storage для отслеживания изменений в localStorage
+    
     const handleStorageChange = () => {
       console.log('Изменения в localStorage');
-      loadUser();  // Перезагружаем пользователя, если данные изменились
+      loadUser();  
     };
 
     window.addEventListener('storage', handleStorageChange);
 
-    // Удаляем слушатель при размонтировании компонента
+    
     return () => {
       window.removeEventListener('storage', handleStorageChange);
     };
-  }, []);  // Пустой массив зависимостей, чтобы эффект выполнялся один раз при монтировании
+  }, []);  
 
   if (!user) {
-    return <p>Загрузка...</p>;  // Если пользователь не загружен, показываем загрузку
+    return <p>Загрузка...</p>;  
   }
 
   return (

@@ -7,7 +7,7 @@ const AddHabit = () => {
   const [description, setDescription] = useState('');
 
   const handleSubmit = () => {
-    const currentUser = getActiveUser();  // Получаем текущего пользователя
+    const currentUser = getActiveUser();  
     if (!currentUser) {
       message.error('Пожалуйста, войдите в систему, чтобы добавить привычку.');
       return;
@@ -15,13 +15,13 @@ const AddHabit = () => {
 
     const newHabit = { title, description };
 
-    // Проверка перед добавлением привычки
+    
     console.log('Добавляем привычку для пользователя:', currentUser.username);
     
-    addHabitToUser(currentUser, newHabit);  // Добавляем привычку в localStorage
+    addHabitToUser(currentUser, newHabit);  
     message.success('Привычка успешно добавлена!');
     
-    // Очистка формы
+   
     setTitle('');
     setDescription('');
   };

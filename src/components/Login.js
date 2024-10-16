@@ -12,7 +12,7 @@ const Login = () => {
     const user = loginUser(email, password);
     if (user) {
       message.success('Успешный вход в систему!');
-      navigate('/profile');  // Перенаправляем на профиль
+      navigate('/profile');  
     } else {
       message.error('Неверные учетные данные');
     }

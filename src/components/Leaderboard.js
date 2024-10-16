@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { List, Card, Statistic } from 'antd';
-import { getAllUsers } from '../services/authService';  // Предположим, что у тебя есть такие функции
+import { getAllUsers } from '../services/authService'; 
 
 const Leaderboard = () => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    const allUsers = getAllUsers();  // Получаем всех пользователей
+    const allUsers = getAllUsers();  
     if (allUsers) {
-      // Фильтруем и сортируем пользователей по количеству привычек
-      const sortedUsers = allUsers.filter(user => user.habits && Array.isArray(user.habits)) // Проверяем наличие массива habits
-                                  .sort((a, b) => b.habits.length - a.habits.length);  // Сортируем по убыванию
-      setUsers(sortedUsers);  // Устанавливаем отсортированный список
+      
+      const sortedUsers = allUsers.filter(user => user.habits && Array.isArray(user.habits)) 
+                                  .sort((a, b) => b.habits.length - a.habits.length);  
+      setUsers(sortedUsers);  
     }
   }, []);
 

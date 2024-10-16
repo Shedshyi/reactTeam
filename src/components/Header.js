@@ -1,4 +1,3 @@
-// src/components/Header.js
 import React from "react";
 import { Menu, Layout } from "antd";
 import { Link } from "react-router-dom";
