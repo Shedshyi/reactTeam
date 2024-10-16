@@ -1,44 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import { List, Card, Statistic } from 'antd';
-import { getAllUsers } from '../services/authService'; 
+import React, { useMemo } from 'react';
 
-const Leaderboard = () => {
-  const [users, setUsers] = useState([]);
-
-  useEffect(() => {
-    const allUsers = getAllUsers();  
-    if (allUsers) {
-      
-      const sortedUsers = allUsers.filter(user => user.habits && Array.isArray(user.habits)) 
-                                  .sort((a, b) => b.habits.length - a.habits.length);  
-      setUsers(sortedUsers);  
+const Leaderboard = ({ leaderboardData }) => {
+  
+  const filteredLeaderboard = useMemo(() => {
+    if (!leaderboardData) {
+      return [];  
     }
-  }, []);
-
-  if (!users.length) {
-    return <p>Нет данных о пользователях.</p>;
-  }
+    return leaderboardData.filter(item => item.score > 100);
+  }, [leaderboardData]);
 
   return (
     <div>
       <h2>Таблица лидеров</h2>
-      <List
-        bordered
-        dataSource={users}
-        renderItem={(user, index) => (
-          <List.Item key={index}>
-            <Card
-              title={user.username}
-              style={{ width: 300, marginBottom: 20 }}
-            >
-              <Statistic title="Количество привычек" value={user.habits.length} />
-              <p>Ранг: {user.habits.length >= 50 ? 'Бриллиант' :
-                          user.habits.length >= 20 ? 'Золото' :
-                          user.habits.length >= 10 ? 'Серебро' : 'Бронза'}</p>
-            </Card>
-          </List.Item>
-        )}
-      />
+      <ul>
+        {filteredLeaderboard.map((item, index) => (
+          <li key={index}>{item.name}: {item.score}</li>
+        ))}
+      </ul>
     </div>
   );
 };

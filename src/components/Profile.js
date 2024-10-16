@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { getActiveUser } from '../services/authService';
+import withAuth from '../hoc/withAuth'; 
+import withLogger from '../hoc/withLogger'; 
 
 const Profile = () => {
   const [user, setUser] = useState(null);
@@ -7,44 +9,49 @@ const Profile = () => {
   const loadUser = () => {
     const currentUser = getActiveUser();  
     if (currentUser) {
-      console.log('Текущий пользователь:', currentUser);  
       setUser(currentUser);  
+    } else {
       console.log('Текущий пользователь не найден');
     }
   };
 
   useEffect(() => {
-    
     loadUser();
 
-    
     const handleStorageChange = () => {
-      console.log('Изменения в localStorage');
       loadUser();  
     };
 
     window.addEventListener('storage', handleStorageChange);
 
-    
     return () => {
       window.removeEventListener('storage', handleStorageChange);
     };
-  }, []);  
+  }, []);
 
-  if (!user) {
+  
+  const memoizedUser = useMemo(() => user, [user]);
+
+  const updateProfile = useCallback((newData) => {
+    setUser((prevUser) => ({
+      ...prevUser,
+      ...newData
+    }));
+  }, []);
+
+  if (!memoizedUser) {
     return <p>Загрузка...</p>;  
   }
 
   return (
     <div>
       <h2>Профиль пользователя</h2>
-      <p>Имя пользователя: {user.username}</p>
-      <p>Электронная почта: {user.email}</p>
-
+      <p>Имя пользователя: {memoizedUser.username}</p>
+      <p>Электронная почта: {memoizedUser.email}</p>
       <h3>Привычки</h3>
-      {user.habits && user.habits.length > 0 ? (
+      {memoizedUser.habits && memoizedUser.habits.length > 0 ? (
         <ul>
-          {user.habits.map((habit, index) => (
+          {memoizedUser.habits.map((habit, index) => (
             <li key={index}>
               <strong>{habit.title}</strong>: {habit.description}
             </li>
@@ -57,4 +64,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default withAuth(withLogger(Profile));

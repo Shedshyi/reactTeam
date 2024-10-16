@@ -1,71 +1,91 @@
-# Getting Started with Create React App
+# Project Documentation
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Описание проекта
 
-## Available Scripts
+Проект представляет собой веб-приложение для управления привычками пользователей. Оно позволяет пользователям:
+- Авторизоваться в системе.
+- Добавлять новые привычки, включая название и описание.
+- Просматривать информацию о своем профиле и текущих привычках.
+- Приложение использует React и Ant Design для построения интерактивного интерфейса.
 
-In the project directory, you can run:
+## Основные компоненты
 
-### `npm start`
+1. **AddHabit**:
+   - Форма для добавления привычек. Пользователь вводит название и описание своей привычки. После нажатия на кнопку "Добавить" привычка сохраняется для текущего пользователя.
+   
+2. **Profile**:
+   - Отображает информацию о текущем пользователе и его привычках. Здесь пользователь может увидеть список своих добавленных привычек и основные данные профиля (имя пользователя и email).
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+3. **Авторизация**:
+   - Проект использует механизм авторизации для того, чтобы обеспечить доступ к функционалу приложения. Пользователи могут добавлять привычки только после авторизации.
+   
+4. **HOCs (Higher-Order Components)**:
+   - `withAuth`: Проверяет, авторизован ли пользователь, и перенаправляет его на страницу логина, если нет.
+   - `withLogger`: Логирует события, такие как загрузка и размонтирование компонента.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Стек технологий
 
-### `npm test`
+- **React**: Библиотека для создания пользовательских интерфейсов.
+- **Ant Design**: Библиотека UI-компонентов для создания удобного интерфейса.
+- **React Hooks**: Используются для управления состоянием и эффектами в компонентах.
+- **HOCs (Higher-Order Components)**: Используются для повторного использования логики в компонентах.
+  
+## Установка и запуск проекта
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Требования:
+Перед тем, как начать, убедитесь, что у вас установлен Node.js и npm. Если они не установлены, вы можете скачать и установить их с официального сайта [Node.js](https://nodejs.org/).
 
-### `npm run build`
+### Шаги для установки:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. **Клонирование репозитория**:
+   Склонируйте проект на свой компьютер с помощью Git.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+   ```bash
+   git clone <URL_репозитория>
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+2. **Переход в директорию проекта: Перейдите в папку проекта.**:
+  
 
-### `npm run eject`
+   ```bash
+   cd <папка_проекта>
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+3. **Установка зависимостей: Установите все необходимые зависимости с помощью npm.**:
+  
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+   ```bash
+   npm install
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+4. **Запуск проекта в режиме разработки: После установки зависимостей вы можете запустить проект в режиме разработки.**:
+ 
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+   ```bash
+   npm start
 
-## Learn More
+4. **Сборка проекта для продакшена:**:
+ 
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+   ```bash
+   npm run build
 
-To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
+/src
+  ├── components      # Компоненты приложения
+  │   ├── AddHabit.js # Компонент для добавления привычек
+  │   ├── Profile.js  # Компонент для отображения профиля пользователя
+  │   └── ...         # Другие компоненты
+  ├── services        # Логика для работы с авторизацией и данными пользователей
+  ├── hoc             # Higher-Order Components для авторизации и логирования
+  ├── App.js          # Главный компонент приложения
+  └── index.js        # Точка входа приложения
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-### Analyzing the Bundle Size
+Использование проекта
+Добавление привычек: После авторизации пользователь может перейти на страницу добавления привычек и заполнить форму. Введите название и описание привычки, нажмите "Добавить", и привычка будет сохранена в системе.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Просмотр профиля: Пользователь может увидеть свой профиль, включая информацию о привычках, на странице профиля.
 
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-# reactTeam
+Зависимости
+React: ^17.0.2
+Ant Design: ^4.16.13
+React Router Dom: Для маршрутизации
+React Hooks: Для управления состоянием
